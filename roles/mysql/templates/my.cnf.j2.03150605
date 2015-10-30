@@ -1,0 +1,28 @@
+#
+# This group is read both both by the client and the server
+# use it for options that affect everything
+#
+[client-server]
+
+#
+# include all files from the config directory
+#
+
+[mysqld]
+datadir=/fioa/mysql/
+socket=/var/lib/mysql/mysql.sock
+innodb_doublewrite
+innodb_flush_log_at_trx_commit = 1
+skip-grant-tables 
+
+# debug
+general_log = 1
+general_log_file=/fioa/log/mysqld_query.log
+long_query_time = 1
+slow_query_log_file=/fioa/log/mysql-slow.log
+
+[mysqld_safe]
+log-error=/fioa/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+
+!includedir /etc/my.cnf.d

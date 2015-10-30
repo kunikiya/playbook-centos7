@@ -1,0 +1,14 @@
+- hosts: all
+  user: kunikiya
+  sudo: yes
+  tasks:
+    - copy: src=./mariadb/mariadb.repo dest=/etc/yum.repos.d/mariadb.repo owner=kunikiya group=root mode=0755
+    - name: install mariadb
+      yum: name={{ item }} enablerepo=mariadb state=present
+      with_items:
+        - MariaDB
+        - MariaDB-server
+        - MariaDB-devel
+        - MariaDB-client
+    - name: start mysqld
+      service: name=mysql state=started enabled=yes

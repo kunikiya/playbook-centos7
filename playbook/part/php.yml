@@ -1,0 +1,28 @@
+- hosts: all
+  user: kunikiya
+  sudo: yes
+  tasks:
+    #- name: install python-pycurl
+    #  apt: pkg=python-pycurl
+    #- name: add php repository
+    #  apt_repository: repo='ppa:ondrej/php5'
+#    - name: install php
+#      yum: name=php enablerepo=remi,remi-php56 state=installed
+    - name: install php
+      yum: name={{ item }} enablerepo=remi,remi-php56 state=present
+      with_items:
+        - php
+        - php-devel
+        - php-opcache
+        - php-fpm
+        - php-mcrypt
+        - php-mysqlnd
+        - php-pdo
+        - php-mbstring
+        - php-dom
+        - php-phpunit-PHPUnit
+        - php-pecl-xdebug
+        - php-pecl-xhprof
+    - name: start php-fpm
+      service: name=php-fpm state=started enabled=yes
+

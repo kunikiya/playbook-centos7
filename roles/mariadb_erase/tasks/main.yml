@@ -1,0 +1,14 @@
+---
+- name: Install DB package
+  yum: name={{ item }} state=absent
+  with_items:
+  - MariaDB-client 
+  - MariaDB-devel 
+  - MariaDB-server
+
+- name: Erase DB config
+  file: path=/etc/my.conf state=absent
+
+- name: Erase DB data
+  file: path=/var/lib/mysql state=absent
+

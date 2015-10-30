@@ -1,0 +1,75 @@
+- hosts: all
+  user: kunikiya
+  tasks:
+  - name: Install dependencies
+    sudo: yes
+    yum: pkg={{item}} state=latest
+    with_items:
+      - git
+      - tar
+      - gcc
+      - make
+      - libffi-devel
+      - zlib-devel
+      - openssl-devel
+      - readline-devel
+
+  - name: Install ruby
+    #sudo: yes
+    yum: name=ruby state=latest
+
+  - name: Install rbenv
+    #sudo: yes
+    #git: repo=https://github.com/sstephenson/rbenv.git dest=/usr/local/rbenv
+    git: repo=https://github.com/sstephenson/rbenv.git dest=~/rbenv
+
+  - name: Install ruby-build
+    #sudo: yes
+    #git: repo=https://github.com/sstephenson/ruby-build.git dest=/usr/local/rbenv/plugins/ruby-build
+    git: repo=https://github.com/sstephenson/ruby-build.git dest=~/rbenv/plugins/ruby-build
+
+  - name: create rbenv group
+    #sudo: yes
+    group: name=rbenv state=present
+
+  - name: add user to rbenv group
+    #sudo: yes
+    user: name=centos append=yes groups=rbenv
+    register: add_group
+
+  - name: create shims dir
+    #sudo: yes
+    #file: path=/usr/local/rbenv/shims state=directory
+    file: path=~/rbenv/shims state=directory
+
+  - name: create versions dir
+    #sudo: yes
+    #file: path=/usr/local/rbenv/versions state=directory
+    file: path=~/rbenv/versions state=directory
+
+  - name: change owner of install dir
+    sudo: yes
+    #command: chgcrp -R rbenv /usr/local/rbenv
+    command: chgrp -R rbenv /home/kunikiya/rbenv
+
+  - name: change mode of install dir
+    sudo: yes
+    #command: chmod -R g+rwxXs /usr/local/rbenv
+    command: chmod -R g+rwxXs /home/kunikiya/rbenv
+
+  - name: Set rbenv env file
+    #sudo: yes
+    copy: src=rubybundle/rbenv.sh dest=/etc/profile.d mode=0775
+
+#  - name: change permission
+    #sudo: yes
+#    shell: bash -lc "chmod 757 -R /usr/local/rbenv"
+
+  - name: Install ruby with rbenv
+    shell: bash -lc "CONFIGURE_OPTS="--disable-install-rdoc" rbenv install 2.2.2"
+
+  - name: set ruby version for system
+    shell: bash -lc "rbenv global 2.2.2 && rbenv rehash"
+
+  - name: install bundle
+    shell: bash -lc "rbenv exec gem install bundler"

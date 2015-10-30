@@ -1,0 +1,7 @@
+---
+- name: DB SetUP
+  hosts: dbserver
+  user: root
+
+  roles:
+    - mariadb

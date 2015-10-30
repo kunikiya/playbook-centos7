@@ -1,0 +1,10 @@
+- hosts: all
+  user: kunikiya
+  sudo: yes
+  tasks:
+    - copy: src=./nginx/nginx.repo dest=/etc/yum.repos.d/nginx.repo owner=root group=root mode=0633
+    - name: install nginx
+      action: yum pkg=nginx enablerepo=nginx state=present
+    - name: start nginx
+      service: name=nginx state=started enabled=yes
+

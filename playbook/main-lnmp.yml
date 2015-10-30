@@ -1,0 +1,15 @@
+# nginx標準構成用インストーラー
+- hosts: all
+  user: root
+  tasks:
+    # SELINUX無効用のパッケージ
+    - name: install python-selinux
+      yum: pkg=libselinux-python state=latest
+
+    # SELINUX無効
+    - name: disable selinux
+      selinux: state=disabled
+
+- include: part/mysql.yml
+- include: part/nginx.yml
+
