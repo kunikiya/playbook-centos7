@@ -23,6 +23,8 @@
         - php-phpunit-PHPUnit
         - php-pecl-xdebug
         - php-pecl-xhprof
+        - php-intl
+        - php-pecl-apcu
     - name: start php-fpm
       service: name=php-fpm state=started enabled=yes
 

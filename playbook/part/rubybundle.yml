@@ -61,9 +61,9 @@
     #sudo: yes
     copy: src=rubybundle/rbenv.sh dest=/etc/profile.d mode=0775
 
-#  - name: change permission
-    #sudo: yes
-#    shell: bash -lc "chmod 757 -R /usr/local/rbenv"
+  - name: change permission
+    sudo: yes
+    shell: bash -lc "chmod 757 -R /usr/local/rbenv"
 
   - name: Install ruby with rbenv
     shell: bash -lc "CONFIGURE_OPTS="--disable-install-rdoc" rbenv install 2.2.2"
